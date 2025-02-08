@@ -1,30 +1,32 @@
-// server.js
-const express = require('express');
-const axios = require('axios');
-const pool = require('./database');
-require('dotenv').config();
+import axios from 'axios';
+import dotenv from 'dotenv';
+import pool from './database/database.js';
 
-const app = express();
+// Load environment variables
+dotenv.config();
 
 // Fetch rates from external API and store in database
 async function fetchAndStoreRates() {
     try {
-        // Fetch from external API
-        const response = await axios.get('YOUR_EXCHANGE_API_ENDPOINT', {
+        const response = await axios.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`, {
             headers: { 'apikey': process.env.API_KEY }
         });
 
-        // Store in database
+        console.log("API Response:", response.data);
+        // store ir DB
         await pool.query(
             'INSERT INTO exchange_rates (from_currency, to_currency, rate) VALUES ($1, $2, $3)',
             ['EUR', 'USD', response.data.rates.USD]
         );
+
+        console.log("Data stored in database");
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-
-
 // Run daily
 setInterval(fetchAndStoreRates, 24 * 60 * 60 * 1000);
+
+// Initial fetch
+fetchAndStoreRates();
