@@ -2,10 +2,8 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import pool from './database/database.js';
 
-// Load environment variables
 dotenv.config();
 
-// Fetch rates from external API and store in database
 async function fetchAndStoreRates() {
     try {
         const response = await axios.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`, {
@@ -25,8 +23,6 @@ async function fetchAndStoreRates() {
     }
 }
 
-// Run daily
+// daily run
 setInterval(fetchAndStoreRates, 24 * 60 * 60 * 1000);
-
-// Initial fetch
 fetchAndStoreRates();
