@@ -2,10 +2,15 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd());
-  const PORT = env.VITE_SERVER_PORT;
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const env = loadEnv(mode, join(__dirname, '..'));
+
+  const PORT = env.VITE_SERVER_PORT || '3000';
   console.log('PORT:', PORT);
 
   return {

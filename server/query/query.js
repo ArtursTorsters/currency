@@ -10,7 +10,7 @@ async function fetchAndStoreRates() {
       `https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`
     );
 
-    console.log("API Response !!!!!", response.data);
+    console.log("API", response.data);
 
     // multi currency
     const currencyPairs = [

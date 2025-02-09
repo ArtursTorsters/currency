@@ -1,12 +1,13 @@
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import pool from './database/database.js';
-import dotenv from 'dotenv';
+// load env from root
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, '../.env') });
 
-dotenv.config();
-console.log('Environment variables:', {
-  SERVER_PORT: process.env.VITE_SERVER_PORT
-});
 const app = express();
 app.use(cors());
 app.use(express.json());
