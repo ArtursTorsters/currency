@@ -9,9 +9,7 @@ async function fetchAndStoreRates() {
     const response = await axios.get(
       `https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`
     );
-
     console.log("API", response.data);
-
     // multi currency
     const currencyPairs = [
       { from: "EUR", to: "USD", rate: response.data.rates.USD },
@@ -21,7 +19,6 @@ async function fetchAndStoreRates() {
 
     // clear rates
     await pool.query("DELETE FROM exchange_rates");
-
     // loop trough and inserrt rates
     for (const currency of currencyPairs) {
       await pool.query(

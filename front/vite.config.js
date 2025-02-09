@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
   const __dirname = dirname(__filename);
   const env = loadEnv(mode, join(__dirname, '..'));
 
-  const PORT = env.VITE_SERVER_PORT || '3000';
+  const PORT = env.VITE_SERVER_PORT;
   console.log('PORT:', PORT);
 
   return {
