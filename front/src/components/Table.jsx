@@ -1,49 +1,51 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function Table() {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    const fetchData = async () => {
-        try {
-            const response = await fetch('/api/rates');
-console.log(response)
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/rates");
+      const result = await response.json();
+      console.log("Data:", result);
+      setData(result);
+    } catch (error) {
+      console.error("Error", error);
+      setError(error.message);
+    }
+  };
 
-            const result = await response.json();
-            setData(result);
-        } catch (error) {
-            console.error('Error fetching data:', error.message);
-        }
-    };
+  if (error) {
+    return <div>{error}</div>;
+  }
 
-    return (
-        <div className="App">
-            <table>
-                <thead>
-                    <tr>
-                        <th>From Currency</th>
-                        <th>To Currency</th>
-                        <th>Exchange Rate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((row, index) => (
-                        <tr key={index}>
-                            <td>{row.from_currency}</td>
-                            <td>{row.to_currency}</td>
-                            <td>{row.rate}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    );
+  return (
+    <div className="App">
+      <table>
+        <thead>
+          <tr>
+            <th>From Currency</th>
+            <th>To Currency</th>
+            <th>Exchange Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, index) => (
+            <tr key={index}>
+              <td>{row.from_currency}</td>
+              <td>{row.to_currency}</td>
+              <td>{row.rate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default Table;

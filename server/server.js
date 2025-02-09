@@ -1,28 +1,28 @@
-import axios from 'axios';
-import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
 import pool from './database/database.js';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-async function fetchAndStoreRates() {
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.get('/rates', async (req, res) => {
     try {
-        const response = await axios.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`, {
-            headers: { 'apikey': process.env.API_KEY }
-        });
+        const result = await pool.query('SELECT * FROM exchange_rates');
+        console.log('Query Result:', result.rows);
+        res.setHeader('Content-Type', 'application/json');
 
-        console.log("API Response:", response.data);
-        // store ir DB
-        await pool.query(
-            'INSERT INTO exchange_rates (from_currency, to_currency, rate) VALUES ($1, $2, $3)',
-            ['EUR', 'USD', response.data.rates.USD]
-        );
-
-        console.log("Data stored in database");
+        //return as json
+        res.json(result.rows);
     } catch (error) {
-        console.error('Error:', error);
+        (error)
     }
-}
+});
 
-// daily run
-setInterval(fetchAndStoreRates, 24 * 60 * 60 * 1000);
-fetchAndStoreRates();
+const PORT = process.env.SERVER_PORT;
+app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+});
