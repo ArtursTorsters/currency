@@ -16,10 +16,8 @@ app.use(express.json());
 app.get('/rates', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM exchange_rates');
-        console.log('Query results:', result.rows);
         res.json(result.rows);
     } catch (error) {
-        console.error('Error in /rates endpoint:', error);
         res.status(500).json({ error: error.message });
     }
 });

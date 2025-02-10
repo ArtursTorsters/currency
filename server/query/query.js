@@ -31,6 +31,6 @@ async function fetchAndStoreRates() {
   }
 }
 
-// run once in 24/7
+// fetch once in 24/7
 fetchAndStoreRates();
 setInterval(fetchAndStoreRates, 24 * 60 * 60 * 1000);

@@ -1,9 +1,11 @@
 import './App.css'
-import Table from './components/Table'
+import Api from './assets/api/Api'
 
 function App() {
   return (
-    <Table/>
+    <>
+      <Api/>
+    </>
   )
 }
 
