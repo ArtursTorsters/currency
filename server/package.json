@@ -10,7 +10,6 @@
   "description": "",
   "type": "module",
   "dependencies": {
-    "axios": "^x.x.x",
     "dotenv": "^x.x.x",
     "express": "^x.x.x",
     "node-cron": "^3.0.3",

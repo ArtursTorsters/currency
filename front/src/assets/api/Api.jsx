@@ -1,22 +1,25 @@
+import { useState, useEffect } from "react";
+import Table from "../../components/table/Table";
 
-import { useState, useEffect } from 'react';
-import Table from "../../components/Table";
 const ApiFetch = () => {
   const [data, setData] = useState([]);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/rates");
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // fetch every min
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/rates");
-        console.log('Response:', response);
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        (error.message);
-      }
-    };
     fetchData();
+    const intervalId = setInterval(fetchData, 60000);
+    return () => clearInterval(intervalId);
   }, []);
+
   return <Table data={data} />;
 };
 
