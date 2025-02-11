@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import pool from "../database/database.js";
-import cron from 'node-cron';
+import cron from "node-cron";
 
 dotenv.config();
 
@@ -24,12 +24,11 @@ async function fetchAndStoreRates() {
         [currency.from, currency.to, currency.rate]
       );
     }
-
   } catch (error) {
     console.error(error);
   }
 }
-
-cron.schedule('* * * * *', () => {
+// every day at midnight
+cron.schedule("0 0 0 * * *", () => {
   fetchAndStoreRates();
 });

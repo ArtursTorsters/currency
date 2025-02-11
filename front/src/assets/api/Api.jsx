@@ -13,11 +13,28 @@ const ApiFetch = () => {
       console.error(error);
     }
   };
-  // fetch every min
+
   useEffect(() => {
+    //init
     fetchData();
-    const intervalId = setInterval(fetchData, 60000);
-    return () => clearInterval(intervalId);
+
+    const midnight = () => {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(now.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      //milliseconds
+      const timeUntilMidnight = tomorrow - now;
+
+      return setTimeout(() => {
+        fetchData();
+        const dailyInterval = setInterval(fetchData, 24 * 60 * 60 * 1000);
+        return () => clearInterval(dailyInterval);
+      }, timeUntilMidnight);
+    };
+
+    const timerId = midnight();
+    return () => clearTimeout(timerId);
   }, []);
 
   return <Table data={data} />;

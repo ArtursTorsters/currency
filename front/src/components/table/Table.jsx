@@ -5,17 +5,15 @@ import Pagination from "../pagination/Pagination";
 const Table = ({ data }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState("desc"); // "asc" or "desc"
+  const [sortOrder, setSortOrder] = useState("desc")
   const itemsPerPage = 10;
-
-  // Filter and sort data
-  const filteredData = data?.filter(
-    (row) => row.to_currency === selectedCurrency
-  ).sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
-  });
+  const filteredData = data
+    ?.filter((row) => row.to_currency === selectedCurrency)
+    .sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+    });
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -26,7 +24,7 @@ const Table = ({ data }) => {
   }, [selectedCurrency]);
 
   const toggleSort = () => {
-    setSortOrder(current => current === "desc" ? "asc" : "desc");
+    setSortOrder((current) => (current === "desc" ? "asc" : "desc"));
   };
 
   return (
