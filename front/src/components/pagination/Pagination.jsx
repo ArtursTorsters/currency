@@ -1,3 +1,5 @@
+import PageButton from "./buttons/PageButton";
+import NavigationButton from "./buttons/NavigationButton";
 const Pagination = ({
   totalItems,
   itemsPerPage,
@@ -5,11 +7,7 @@ const Pagination = ({
   setCurrentPage,
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(i);
-  }
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -25,37 +23,30 @@ const Pagination = ({
 
   return (
     <div className="flex justify-center items-center space-x-2 mt-4">
-      <button
-        className={`px-4 py-2 rounded ${
-          currentPage === 1 ? "text-gray-500" : "bg-blue-500 text-white"
-        }`}
+      <NavigationButton
         onClick={handlePrevious}
         disabled={currentPage === 1}
+        isActive={currentPage !== 1}
       >
         Previous
-      </button>
+      </NavigationButton>
+
       {pages.map((page) => (
-        <button
+        <PageButton
           key={page}
-          className={`px-4 py-2 rounded ${
-            currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200"
-          }`}
-          onClick={() => setCurrentPage(page)}
-        >
-          {page}
-        </button>
+          page={page}
+          isCurrentPage={currentPage === page}
+          onClick={setCurrentPage}
+        />
       ))}
-      <button
-        className={`px-4 py-2 rounded ${
-          currentPage === totalPages
-            ? "text-gray-500"
-            : "bg-blue-500 text-white"
-        }`}
+
+      <NavigationButton
         onClick={handleNext}
         disabled={currentPage === totalPages}
+        isActive={currentPage !== totalPages}
       >
         Next
-      </button>
+      </NavigationButton>
     </div>
   );
 };

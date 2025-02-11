@@ -64,7 +64,6 @@ const Table = ({ data }) => {
           </tbody>
         </table>
       </div>
-
       <Pagination
         totalItems={filteredData?.length || 0}
         itemsPerPage={itemsPerPage}
