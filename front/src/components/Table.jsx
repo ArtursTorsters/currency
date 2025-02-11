@@ -1,40 +1,36 @@
 import { useState } from 'react';
+import Select from './inputs/Select';
 
 const Table = ({ data }) => {
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const currencies = ['USD', 'AUD', 'GBP'];
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const filteredData = data?.filter(row => row.to_currency === selectedCurrency);
 
-  console.log(data);
-
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <div className="mb-4 flex justify-between items-center">
-        <h3 className="text-2xl font-bold">1 EUR to {selectedCurrency} Exchange Rate</h3>
-        <select
-          value={selectedCurrency}
-          onChange={(e) => setSelectedCurrency(e.target.value)}
-          className="border rounded p-2"
-        >
-          {currencies.map(currency => (
-            <option key={currency} value={currency}>EUR to {currency}</option>
-          ))}
-        </select>
+    <div className="w-full mx-auto p-4">
+      <div className="mb-4 flex flex-col items-center">
+        <h3 className="text-2xl font-bold w-full mb-2">
+          1 EUR to {selectedCurrency} Exchange Rate
+        </h3>
+        <h5 className='mb-2'>Last updated: new Date:</h5>
+        <Select
+          selectedCurrency={selectedCurrency}
+          onCurrencyChange={setSelectedCurrency}
+        />
       </div>
 
-      <div className="border rounded-lg overflow-hidden">
+      <div className="border rounded-lg">
         <table className="w-full">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-left border-b">Date</th>
-              <th className="px-6 py-3 text-left border-b">Rate</th>
+              <th className="p-6 border-b border-r">Date</th>
+              <th className="p-6 border-b">Rate</th>
             </tr>
           </thead>
           <tbody>
             {filteredData?.map((row, index) => (
-              <tr key={index} className='py-4'>
-                <td className="border-b">{new Date().toDateString()}</td>
-                <td className="border-b">{row.rate}</td>
+              <tr key={index} className='py-4 w-full'>
+                <td className="border-b p-2 w-1/2">{new Date(row.date).toDateString()}</td>
+                <td className="border-b border-l p-2 w-1/2">{row.rate}</td>
               </tr>
             ))}
           </tbody>
