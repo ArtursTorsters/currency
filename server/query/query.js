@@ -9,9 +9,7 @@ async function fetchAndStoreRates() {
     const response = await fetch(
       `https://anyapi.io/api/v1/exchange/rates?apiKey=${process.env.API_KEY}`
     );
-    const data = await response.json();
-    console.log("API", data);
-
+    const data = await response.json()
     const currencyPairs = [
       { from: "EUR", to: "USD", rate: data.rates.USD },
       { from: "EUR", to: "GBP", rate: data.rates.GBP },
